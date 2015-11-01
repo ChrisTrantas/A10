@@ -113,6 +113,10 @@ public:
     */
     bool IsColliding(MyBoundingBoxClass* const a_pOther) const;
 
+	vector3 GetMaximum(void) const;
+
+	vector3 GetMinimum(void) const;
+
 private:
     /*
     Method: Release

@@ -166,6 +166,10 @@ vector3 MyBoundingBoxClass::GetCenterGlobal( void ) const { return vector3( m_m4
 
 vector3 MyBoundingBoxClass::GetHalfWidth( void ) const { return m_v3HalfWidth; }
 
+vector3 MyBoundingBoxClass::GetMaximum(void) const { return m_v3Max; }
+
+vector3 MyBoundingBoxClass::GetMinimum(void) const { return m_v3Min; }
+
 //--- Non Standard Singleton Methods
 bool MyBoundingBoxClass::IsColliding( MyBoundingBoxClass* const a_pOther ) const
 {

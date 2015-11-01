@@ -32,6 +32,8 @@ void AppClass::InitVariables(void)
 
 	m_pBS1 = new MyBoundingSphereClass(m_pMeshMngr->GetVertexList("Steve"));
 	m_pBS2 = new MyBoundingSphereClass(m_pMeshMngr->GetVertexList("Creeper"));
+
+	m_pBO1 = new MyBoundingObjectClass(m_pMeshMngr->GetVertexList("Steve"));
 }
 
 void AppClass::Update(void)
@@ -62,7 +64,7 @@ void AppClass::Update(void)
         v3Color = RERED;
 
     // Add wire frames for the un-oriented bounding boxes
-	m_pMeshMngr->AddCubeToQueue(glm::translate(m_pBB1->GetCenterGlobal()) * ToMatrix4(m_qArcBall) * glm::scale(m_pBB1->GetHalfWidth() * 2.0f), v3Color, WIRE);
+	//m_pMeshMngr->AddCubeToQueue(glm::translate(m_pBB1->GetCenterGlobal()) * ToMatrix4(m_qArcBall) * glm::scale(m_pBB1->GetHalfWidth() * 2.0f), v3Color, WIRE);
     m_pMeshMngr->AddCubeToQueue(glm::translate(m_pBB2->GetCenterGlobal()) * glm::scale(m_pBB2->GetHalfWidth() * 2.0f), v3Color, WIRE);
 
     // Get our re-oriented bounding boxes
@@ -80,9 +82,8 @@ void AppClass::Update(void)
     }
 
     // Add wire frames for the re-oriented bounding boxes
-    m_pMeshMngr->AddCubeToQueue( glm::translate( _reorientedBB1.GetCenterGlobal() ) * glm::scale( _reorientedBB1.GetHalfWidth() * 2.0f ), v3Color, WIRE );
+   // m_pMeshMngr->AddCubeToQueue( glm::translate( _reorientedBB1.GetCenterGlobal() ) * glm::scale( _reorientedBB1.GetHalfWidth() * 2.0f ), v3Color, WIRE );
     m_pMeshMngr->AddCubeToQueue( glm::translate( _reorientedBB2.GetCenterGlobal() ) * glm::scale( _reorientedBB2.GetHalfWidth() * 2.0f ), v3Color, WIRE );
-
 	
 	
 	
@@ -100,12 +101,11 @@ void AppClass::Update(void)
 	}
 
 	// Add wire frames for the bounding spheres
-	m_pMeshMngr->AddSphereToQueue(glm::translate(m_pBS1->GetCenterGlobal()) *   glm::scale(vector3(m_pBS1->GetRadius()* 2.0f)), v3Color, WIRE);
-	m_pMeshMngr->AddSphereToQueue(glm::translate(m_pBS2->GetCenterGlobal()) * glm::scale(vector3(m_pBS1->GetRadius()* 2.0f)), v3Color, WIRE);
+	//m_pMeshMngr->AddSphereToQueue(glm::translate(m_pBS1->GetCenterGlobal()) *   glm::scale(vector3(m_pBS1->GetRadius()* 2.0f)), v3Color, WIRE);
+	m_pMeshMngr->AddSphereToQueue(glm::translate(m_pBS2->GetCenterGlobal()) * glm::scale(vector3(m_pBS2->GetRadius()* 2.0f)), v3Color, WIRE);
 
-
-    //m_pMeshMngr->AddCubeToQueue(m_pBB1->GetModelMatrix() * glm::translate(IDENTITY_M4, m_pBB1->GetCenterLocal()) * glm::scale(m_pBB1->GetHalfWidth() * 2.0f), v3Color, WIRE);
-    //m_pMeshMngr->AddCubeToQueue(m_pBB2->GetModelMatrix() * glm::translate(IDENTITY_M4, m_pBB2->GetCenterLocal()) * glm::scale(m_pBB2->GetHalfWidth() * 2.0f), v3Color, WIRE);
+	m_pBO1->SetModelMatrix(m_pMeshMngr->GetModelMatrix("Steve"));
+	m_pBO1->Draw(m_pMeshMngr);
 
     //Adds all loaded instance to the render list
     m_pMeshMngr->AddInstanceToRenderList("ALL");
