@@ -1,7 +1,14 @@
-﻿Build started 10/31/2015 02:15:51.
+﻿Build started 10/31/2015 20:44:05.
      1>Project "E:\Dropbox\Rochester Institute of Technology\Classes\Data Structures and Algorithms and Simulation II\A10 - Bounding Object Manager\Source\A10.vcxproj" on node 2 (Build target(s)).
      1>ClCompile:
-         E:\Program Files (x86)\Microsoft Visual Studio 13.0\VC\bin\CL.exe /c /Zi /nologo /W3 /WX- /Od /Oy- /D DEBUG /D _MBCS /D _UNICODE /D UNICODE /Gm /EHsc /RTC1 /MDd /GS /fp:precise /Zc:wchar_t /Zc:forScope /Fo"E:\Dropbox\Rochester Institute of Technology\Classes\Data Structures and Algorithms and Simulation II\A10 - Bounding Object Manager\Z_DELETE\E13_BoundingBoxClass\Debug\\" /Fd"E:\Dropbox\Rochester Institute of Technology\Classes\Data Structures and Algorithms and Simulation II\A10 - Bounding Object Manager\Z_DELETE\E13_BoundingBoxClass\Debug\vc120.pdb" /Gd /TP /wd4251 /analyze- /errorReport:prompt /D _CRT_SECURE_NO_WARNINGS AppClassControls.cpp
+         E:\Program Files (x86)\Microsoft Visual Studio 13.0\VC\bin\CL.exe /c /Zi /nologo /W3 /WX- /Od /Oy- /D DEBUG /D _MBCS /D _UNICODE /D UNICODE /Gm /EHsc /RTC1 /MDd /GS /fp:precise /Zc:wchar_t /Zc:forScope /Fo"E:\Dropbox\Rochester Institute of Technology\Classes\Data Structures and Algorithms and Simulation II\A10 - Bounding Object Manager\Z_DELETE\E13_BoundingBoxClass\Debug\\" /Fd"E:\Dropbox\Rochester Institute of Technology\Classes\Data Structures and Algorithms and Simulation II\A10 - Bounding Object Manager\Z_DELETE\E13_BoundingBoxClass\Debug\vc120.pdb" /Gd /TP /wd4251 /analyze- /errorReport:prompt /D _CRT_SECURE_NO_WARNINGS AppClass.cpp AppClassControls.cpp Main.cpp MyBoundingSphereClass.cpp
+         MyBoundingSphereClass.cpp
+         Generating Code...
+         Compiling...
+         AppClass.cpp
+         Generating Code...
+         Skipping... (no relevant changes detected)
+         Main.cpp
          AppClassControls.cpp
        Link:
          E:\Program Files (x86)\Microsoft Visual Studio 13.0\VC\bin\link.exe /ERRORREPORT:PROMPT /OUT:"E:\Dropbox\Rochester Institute of Technology\Classes\Data Structures and Algorithms and Simulation II\A10 - Bounding Object Manager\Z_DELETE\E13_BoundingBoxClassD.exe" /INCREMENTAL /NOLOGO glew32.lib opengl32.lib glu32.lib ReEng_d.lib "sfml-system.lib" "sfml-window.lib" kernel32.lib user32.lib gdi32.lib winspool.lib comdlg32.lib advapi32.lib shell32.lib ole32.lib oleaut32.lib uuid.lib odbc32.lib odbccp32.lib /MANIFEST /MANIFESTUAC:"level='asInvoker' uiAccess='false'" /manifest:embed /DEBUG /PDB:"E:\Dropbox\Rochester Institute of Technology\Classes\Data Structures and Algorithms and Simulation II\A10 - Bounding Object Manager\Z_DELETE\E13_BoundingBoxClassD.pdb" /TLBID:1 /DYNAMICBASE /NXCOMPAT /IMPLIB:"E:\Dropbox\Rochester Institute of Technology\Classes\Data Structures and Algorithms and Simulation II\A10 - Bounding Object Manager\Z_DELETE\E13_BoundingBoxClassD.lib" /MACHINE:X86 /PROFILE "E:\Dropbox\Rochester Institute of Technology\Classes\Data Structures and Algorithms and Simulation II\A10 - Bounding Object Manager\Z_DELETE\E13_BoundingBoxClass\Debug\BTO.res"
@@ -9,6 +16,8 @@
          "E:\Dropbox\Rochester Institute of Technology\Classes\Data Structures and Algorithms and Simulation II\A10 - Bounding Object Manager\Z_DELETE\E13_BoundingBoxClass\Debug\AppClassControls.obj"
          "E:\Dropbox\Rochester Institute of Technology\Classes\Data Structures and Algorithms and Simulation II\A10 - Bounding Object Manager\Z_DELETE\E13_BoundingBoxClass\Debug\MyBoundingBoxClass.obj"
          "E:\Dropbox\Rochester Institute of Technology\Classes\Data Structures and Algorithms and Simulation II\A10 - Bounding Object Manager\Z_DELETE\E13_BoundingBoxClass\Debug\Main.obj"
+         "E:\Dropbox\Rochester Institute of Technology\Classes\Data Structures and Algorithms and Simulation II\A10 - Bounding Object Manager\Z_DELETE\E13_BoundingBoxClass\Debug\MyBoundingObjectClass.obj"
+         "E:\Dropbox\Rochester Institute of Technology\Classes\Data Structures and Algorithms and Simulation II\A10 - Bounding Object Manager\Z_DELETE\E13_BoundingBoxClass\Debug\MyBoundingSphereClass.obj"
      1>LINK : warning LNK4075: ignoring '/INCREMENTAL' due to '/PROFILE' specification
          A10.vcxproj -> E:\Dropbox\Rochester Institute of Technology\Classes\Data Structures and Algorithms and Simulation II\A10 - Bounding Object Manager\Z_DELETE\E13_BoundingBoxClassD.exe
        PostBuildEvent:
@@ -51,4 +60,4 @@
 
 Build succeeded.
 
-Time Elapsed 00:00:02.02
+Time Elapsed 00:00:03.00

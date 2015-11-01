@@ -29,6 +29,9 @@ void AppClass::InitVariables(void)
 
     m_pBB1 = new MyBoundingBoxClass( m_pMeshMngr->GetVertexList( "Steve" ) );
     m_pBB2 = new MyBoundingBoxClass( m_pMeshMngr->GetVertexList( "Creeper" ) );
+
+	m_pBS1 = new MyBoundingSphereClass(m_pMeshMngr->GetVertexList("Steve"));
+	m_pBS2 = new MyBoundingSphereClass(m_pMeshMngr->GetVertexList("Creeper"));
 }
 
 void AppClass::Update(void)
@@ -62,9 +65,6 @@ void AppClass::Update(void)
 	m_pMeshMngr->AddCubeToQueue(glm::translate(m_pBB1->GetCenterGlobal()) * ToMatrix4(m_qArcBall) * glm::scale(m_pBB1->GetHalfWidth() * 2.0f), v3Color, WIRE);
     m_pMeshMngr->AddCubeToQueue(glm::translate(m_pBB2->GetCenterGlobal()) * glm::scale(m_pBB2->GetHalfWidth() * 2.0f), v3Color, WIRE);
 
-
-
-
     // Get our re-oriented bounding boxes
     _reorientedBB1 = m_pBB1->GetReorientedBoundingBox();
     _reorientedBB2 = m_pBB2->GetReorientedBoundingBox();
@@ -83,7 +83,25 @@ void AppClass::Update(void)
     m_pMeshMngr->AddCubeToQueue( glm::translate( _reorientedBB1.GetCenterGlobal() ) * glm::scale( _reorientedBB1.GetHalfWidth() * 2.0f ), v3Color, WIRE );
     m_pMeshMngr->AddCubeToQueue( glm::translate( _reorientedBB2.GetCenterGlobal() ) * glm::scale( _reorientedBB2.GetHalfWidth() * 2.0f ), v3Color, WIRE );
 
+	
+	
+	
+	// Set the bounding sphere's position
+	m_pBS1->SetModelMatrix(m_pMeshMngr->GetModelMatrix("Steve"));
+	m_pBS2->SetModelMatrix(m_pMeshMngr->GetModelMatrix("Creeper"));
 
+	// Get the color for the bounding spheres
+	v3Color = REBLACK;
+	if (m_pBS1->IsColliding(m_pBS2))
+	{
+		v3Color.r = 1.000000000f;
+		v3Color.g = 0;
+		v3Color.b = 0;
+	}
+
+	// Add wire frames for the bounding spheres
+	m_pMeshMngr->AddSphereToQueue(glm::translate(m_pBS1->GetCenterGlobal()) *   glm::scale(vector3(m_pBS1->GetRadius()* 2.0f)), v3Color, WIRE);
+	m_pMeshMngr->AddSphereToQueue(glm::translate(m_pBS2->GetCenterGlobal()) * glm::scale(vector3(m_pBS1->GetRadius()* 2.0f)), v3Color, WIRE);
 
 
     //m_pMeshMngr->AddCubeToQueue(m_pBB1->GetModelMatrix() * glm::translate(IDENTITY_M4, m_pBB1->GetCenterLocal()) * glm::scale(m_pBB1->GetHalfWidth() * 2.0f), v3Color, WIRE);

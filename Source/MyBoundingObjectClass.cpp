@@ -1,8 +1,9 @@
 #include "MyBoundingObjectClass.h"
 
 
-MyBoundingObjectClass::MyBoundingObjectClass()
+MyBoundingObjectClass::MyBoundingObjectClass(const std::vector<vector3>& a_lVectorList)
 {
+
 }
 
 

@@ -7,7 +7,7 @@
 class MyBoundingObjectClass
 {
 	boolean m_bVisibility;	// Holds the visibility of the BO
-	vector3 m_v3Color;
+	vector3 m_v3Color = REWHITE;	// Holds the color of the bounding object
 
 	matrix4 m_m4ToWorld = IDENTITY_M4; // Matrix that takes us from local to world coordinates
 	vector3 m_v3Center = vector3(0.0f); // Stores the center point of the Bounding Object
