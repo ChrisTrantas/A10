@@ -62,11 +62,25 @@ bool MyBoundingObjectClass::IsColliding(MyBoundingObjectClass* const a_pOther) c
     // In the future, we would add Oriented Bounding Box collision
 }
 
-void MyBoundingObjectClass::Draw(MeshManagerSingleton* a_pMeshMngr)
+void MyBoundingObjectClass::Draw()
 {
-    a_pMeshMngr->AddCubeToQueue(glm::translate(m_pBoundingBox->GetCenterGlobal()) * glm::extractMatrixRotation(m_m4ToWorld) * glm::scale(m_pBoundingBox->GetHalfWidth() * 2.0f), m_v3Color, WIRE);
-    a_pMeshMngr->AddCubeToQueue(glm::translate(m_pReorientedBoundingBox->GetCenterGlobal()) * glm::scale(m_pReorientedBoundingBox->GetHalfWidth() * 2.0f), m_v3Color, WIRE);
-    a_pMeshMngr->AddSphereToQueue(glm::translate(m_pBoundingSphere->GetCenterGlobal()) *   glm::scale(vector3(m_pBoundingSphere->GetRadius()* 2.0f)), m_v3Color, WIRE);
+    MeshManagerSingleton* meshManager = MeshManagerSingleton::GetInstance();
+
+    // Add the oriented bounding box to the render queue
+    meshManager->AddCubeToQueue( glm::translate( m_pBoundingBox->GetCenterGlobal() )
+                                 * glm::extractMatrixRotation( m_m4ToWorld )
+                                 * glm::scale( m_pBoundingBox->GetHalfWidth() * 2.0f ),
+                                 m_v3Color, WIRE );
+
+    // Add the re-oriented bounding box to the render queue
+    meshManager->AddCubeToQueue( glm::translate( m_pReorientedBoundingBox->GetCenterGlobal() )
+                                 * glm::scale( m_pReorientedBoundingBox->GetHalfWidth() * 2.0f ),
+                                 m_v3Color, WIRE );
+
+    // Add the bounding sphere to the render queue
+    meshManager->AddSphereToQueue( glm::translate( m_pBoundingSphere->GetCenterGlobal() )
+                                   * glm::scale( vector3( m_pBoundingSphere->GetRadius()* 2.0f ) ),
+                                   m_v3Color, WIRE );
 }
 
 #pragma region Accessors

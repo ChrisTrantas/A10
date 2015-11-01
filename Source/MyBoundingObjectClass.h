@@ -54,8 +54,10 @@ public:
     // Sets the color of the Bounding Object
     void SetColor(vector3 a_v3Color);
 
-    // Adds the Bounding Object to the Render List
-    void Draw(MeshManagerSingleton*);
+    /// <summary>
+    /// Draws this bounding object.
+    /// </summary>
+    void Draw();
 
     bool IsColliding(MyBoundingObjectClass* const a_pOther) const;
 };
