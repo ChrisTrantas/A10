@@ -31,5 +31,6 @@
 Z_DELETE/
 
 # MISC
+*.opensdf
 *.sdf
 *.suo
