@@ -63,6 +63,12 @@ void MyBoundingSphereClass::SetModelMatrix(matrix4 a_m4ToWorld)
     m_m4ToWorld = a_m4ToWorld;
 }
 
+void MyBoundingSphereClass::UpdateFromBoundingBox( const MyBoundingBoxClass* box )
+{
+    m_v3Center = box->GetCenterLocal();
+    m_fRadius = glm::distance( box->GetCenterLocal(), box->GetMaximum() );
+}
+
 vector3 MyBoundingSphereClass::GetCenterLocal()
 {
     return m_v3Center;

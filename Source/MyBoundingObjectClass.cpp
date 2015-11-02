@@ -91,7 +91,11 @@ void MyBoundingObjectClass::SetModelMatrix(matrix4 a_m4ToWorld)
     
     m_pBoundingBox->SetModelMatrix(a_m4ToWorld);
     *m_pReorientedBoundingBox = m_pBoundingBox->GetReorientedBoundingBox();
-    m_pBoundingSphere->SetModelMatrix(a_m4ToWorld);
+
+    m_pBoundingSphere->UpdateFromBoundingBox( m_pReorientedBoundingBox.get() );
+
+    matrix4 sphereWorld = glm::translate( vector3( a_m4ToWorld[ 3 ] ) );
+    m_pBoundingSphere->SetModelMatrix( sphereWorld );
 }
 
 matrix4 MyBoundingObjectClass::GetModelMatrix() const
