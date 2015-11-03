@@ -4,7 +4,7 @@
 class BoundingObjectManager
 {
 	static BoundingObjectManager* m_pInstance;
-	std::shared_ptr<MyBoundingObjectClass> m_pBoundingObject;
+	std::shared_ptr<MyBoundingObjectClass*> m_pBoundingObject;
 	std::shared_ptr<MyBoundingBoxClass> m_pReorientedBoundingBox;
 	std::shared_ptr<MyBoundingSphereClass> m_pBoundingSphere;
 
