@@ -12,8 +12,6 @@ MyBoundingObjectClass::MyBoundingObjectClass(MyBoundingObjectClass const& other)
 {
     m_m4ToWorld = other.m_m4ToWorld;
 
-    m_v3Center = other.m_v3Center;
-
     m_bVisibility = other.m_bVisibility;
     m_v3Color = other.m_v3Color;
 
@@ -25,8 +23,6 @@ MyBoundingObjectClass::MyBoundingObjectClass(MyBoundingObjectClass const& other)
 MyBoundingObjectClass& MyBoundingObjectClass::operator=(MyBoundingObjectClass const& other)
 {
     m_m4ToWorld = other.m_m4ToWorld;
-
-    m_v3Center = other.m_v3Center;
 
     m_bVisibility = other.m_bVisibility;
     m_v3Color = other.m_v3Color;

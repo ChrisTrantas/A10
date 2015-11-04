@@ -1,12 +1,10 @@
-#ifndef __MYBOUNDINGOBJECTCLASS_H_
-#define __MYBOUNDINGOBJECTCLASS_H_
+#ifndef __MYBOUNDINGOBJECTCLASS_H__
+#define __MYBOUNDINGOBJECTCLASS_H__
 
 #include "RE\ReEng.h"
 
 #include "MyBoundingBoxClass.h"
 #include "MyBoundingSphereClass.h"
-
-#include <memory> // for std::shared_ptr
 
 class MyBoundingObjectClass
 {
@@ -50,4 +48,4 @@ public:
 #pragma endregion
 };
 
-#endif //__MYBOUNDINGOBJECTCLASS_H_
+#endif //__MYBOUNDINGOBJECTCLASS_H__
