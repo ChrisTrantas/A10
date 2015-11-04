@@ -1,5 +1,6 @@
 #pragma once
 #include "MyBoundingObjectClass.h"
+#include <memory>
 
 class BoundingObjectManager
 {

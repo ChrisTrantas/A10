@@ -3,7 +3,7 @@
 
 MyBoundingObjectClass::MyBoundingObjectClass(const std::vector<vector3>& a_lVectorList)
 {
-	m_pBoundingBox = new MyBoundingBoxClass(a_lVectorList);
+    m_pBoundingBox = new MyBoundingBoxClass(a_lVectorList);
     m_pReorientedBoundingBox = new MyBoundingBoxClass( a_lVectorList );
     m_pBoundingSphere = new MyBoundingSphereClass( a_lVectorList );
 }
@@ -93,22 +93,22 @@ matrix4 MyBoundingObjectClass::GetModelMatrix() const
 
 void MyBoundingObjectClass::SetColor(vector3 a_v3Color)
 {
-	m_v3Color = a_v3Color;
+    m_v3Color = a_v3Color;
 }
 
 vector3 MyBoundingObjectClass::GetColor()
 {
-	return m_v3Color;
+    return m_v3Color;
 }
 
 vector3 MyBoundingObjectClass::GetCenterLocal() const
 {
-	return m_pBoundingSphere->GetCenterLocal();
+    return m_pBoundingSphere->GetCenterLocal();
 }
 
 vector3 MyBoundingObjectClass::GetCenterGlobal() const
 {
-	return m_pBoundingSphere->GetCenterGlobal();
+    return m_pBoundingSphere->GetCenterGlobal();
 }
 
 vector3 MyBoundingObjectClass::GetMinimum() const

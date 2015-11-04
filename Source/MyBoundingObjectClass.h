@@ -26,25 +26,24 @@ public:
     ~MyBoundingObjectClass();	// Destructor
 
 
-	void Draw();	// Renderes reference shapes to show thhe bounding object
-	bool IsColliding(MyBoundingObjectClass* const a_pOther) const;	// Checks if this is colliding with another bounding object.
+    void Draw();	// Renderes reference shapes to show thhe bounding object
+    bool IsColliding(MyBoundingObjectClass* const a_pOther) const;	// Checks if this is colliding with another bounding object.
 
-	vector3 GetCenterLocal() const;		// Gets the center of the bounding object in local space
-	vector3 GetCenterGlobal() const;	// Gets the center of the bounding object in global space
+    vector3 GetCenterLocal() const;		// Gets the center of the bounding object in local space
+    vector3 GetCenterGlobal() const;	// Gets the center of the bounding object in global space
 
-	vector3 GetMinimum() const;	// Gets the minimum vector 3 of the bounding object
-	vector3 GetMaximum() const;	// Gets the maximum vector 3 of the bounding object
+    vector3 GetMinimum() const;	// Gets the minimum vector 3 of the bounding object
+    vector3 GetMaximum() const;	// Gets the maximum vector 3 of the bounding object
 
 #pragma region Accessors
     void SetModelMatrix(matrix4 a_m4ToWorld);	// Sets the to world matrix of the bounding object
     matrix4 GetModelMatrix() const;	// Sets the to world matrix of the bounding object
 
-	void SetVisibility(bool a_bVisibility);	// Sets the visibility of the bounding object
-	bool GetVisibility() const;	//Gets the visibility of the bounding object
+    void SetVisibility(bool a_bVisibility);	// Sets the visibility of the bounding object
+    bool GetVisibility() const;	//Gets the visibility of the bounding object
 
-   
     void SetColor(vector3 a_v3Color); // Sets the color of the Bounding Object when drawn
-	vector3 GetColor(); // Gets the current color 
+    vector3 GetColor(); // Gets the current color 
 #pragma endregion
 };
 
