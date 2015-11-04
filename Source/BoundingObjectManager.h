@@ -5,17 +5,12 @@
 class BoundingObjectManager
 {
 	static BoundingObjectManager* m_pInstance;
-	std::shared_ptr<MyBoundingObjectClass*> m_pBoundingObject;
-	std::shared_ptr<MyBoundingBoxClass> m_pReorientedBoundingBox;
-	std::shared_ptr<MyBoundingSphereClass> m_pBoundingSphere;
+	std::vector<MyBoundingObjectClass*> m_lBox; // 
 
-	bool m_bVisibility;	// Holds the visibility of the BO
-	vector3 m_v3Color = REBLACK;	// Holds the color of the bounding object
-
-	matrix4 m_m4ToWorld = IDENTITY_M4; // Matrix that takes us from local to world coordinates
-	vector3 m_v3Center = vector3(0.0f); // Stores the center point of the Bounding Object
-	vector3 m_v3Min = vector3(0.0f); // Stores the minimum vector of the bounding object Class
-	vector3 m_v3Max = vector3(0.0f); // Stores the maximum vector of the bounding object Class
+	int m_nBoxCount = 0;
+	bool m_bVisibility = false;	// Holds the visibility of the BO
+	//vector3 m_v3Color = REBLACK;	// Holds the color of the bounding object
+	
 
 public:
 	// Gets/constructs the singleton pointer
@@ -23,6 +18,8 @@ public:
 	
 	// Destroys the singleton
 	static void ReleaseInstance(void);
+
+	void AddBox(const std::vector<vector3>& vertices);
 
 	void SetVisibility(bool a_bVisibility);
 
@@ -38,6 +35,7 @@ public:
 
 	vector3 GetMaximum() const;
 
+	bool IsColliding(MyBoundingObjectClass* const a_pOther) const;	// Checks if this is colliding with another bounding object.
 
 	void SetModelMatrix(matrix4 a_m4ToWorld);
 	matrix4 GetModelMatrix() const;
