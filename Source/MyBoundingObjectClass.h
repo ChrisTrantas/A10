@@ -10,56 +10,44 @@
 
 class MyBoundingObjectClass
 {
-    std::shared_ptr<MyBoundingBoxClass> m_pBoundingBox;
-    std::shared_ptr<MyBoundingBoxClass> m_pReorientedBoundingBox;
-    std::shared_ptr<MyBoundingSphereClass> m_pBoundingSphere;
+    MyBoundingBoxClass* m_pBoundingBox;
+    MyBoundingBoxClass* m_pReorientedBoundingBox;
+    MyBoundingSphereClass* m_pBoundingSphere;
 
     bool m_bVisibility;	// Holds the visibility of the BO
     vector3 m_v3Color = REBLACK;	// Holds the color of the bounding object
 
-    matrix4 m_m4ToWorld = IDENTITY_M4; // Matrix that takes us from local to world coordinates
-    vector3 m_v3Center = vector3(0.0f); // Stores the center point of the Bounding Object
-    vector3 m_v3Min = vector3(0.0f); // Stores the minimum vector of the bounding object Class
-    vector3 m_v3Max = vector3(0.0f); // Stores the maximum vector of the bounding object Class
+    matrix4 m_m4ToWorld = IDENTITY_M4;	// Matrix that takes us from local to world coordinates
 
 public:
     // Creates Bounding Object from list of vertices
     MyBoundingObjectClass(const std::vector<vector3>& vertices);
 
-    MyBoundingObjectClass(MyBoundingObjectClass const& other);
-
-    MyBoundingObjectClass& operator=(MyBoundingObjectClass const& other);
-
-    ~MyBoundingObjectClass();
+    MyBoundingObjectClass(MyBoundingObjectClass const& other);	// Copy Constructor
+    MyBoundingObjectClass& operator=(MyBoundingObjectClass const& other);	// Copy Assignment Operator
+    ~MyBoundingObjectClass();	// Destructor
 
 
-    void SetVisibility(bool a_bVisibility);
+	void Draw();	// Renderes reference shapes to show thhe bounding object
+	bool IsColliding(MyBoundingObjectClass* const a_pOther) const;	// Checks if this is colliding with another bounding object.
 
-    bool GetVisibility() const;
+	vector3 GetCenterLocal() const;		// Gets the center of the bounding object in local space
+	vector3 GetCenterGlobal() const;	// Gets the center of the bounding object in global space
 
+	vector3 GetMinimum() const;	// Gets the minimum vector 3 of the bounding object
+	vector3 GetMaximum() const;	// Gets the maximum vector 3 of the bounding object
 
-    vector3 GetCenterLocal() const;
+#pragma region Accessors
+    void SetModelMatrix(matrix4 a_m4ToWorld);	// Sets the to world matrix of the bounding object
+    matrix4 GetModelMatrix() const;	// Sets the to world matrix of the bounding object
 
-    vector3 GetCenterGlobal() const;
+	void SetVisibility(bool a_bVisibility);	// Sets the visibility of the bounding object
+	bool GetVisibility() const;	//Gets the visibility of the bounding object
 
-
-    vector3 GetMinimum() const;
-
-    vector3 GetMaximum() const;
-
-
-    void SetModelMatrix(matrix4 a_m4ToWorld);
-    matrix4 GetModelMatrix() const;
-
-    // Sets the color of the Bounding Object
-    void SetColor(vector3 a_v3Color);
-
-    /// <summary>
-    /// Draws this bounding object.
-    /// </summary>
-    void Draw();
-
-    bool IsColliding(MyBoundingObjectClass* const a_pOther) const;
+   
+    void SetColor(vector3 a_v3Color); // Sets the color of the Bounding Object when drawn
+	vector3 GetColor(); // Gets the current color 
+#pragma endregion
 };
 
 #endif //__MYBOUNDINGOBJECTCLASS_H_

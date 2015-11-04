@@ -3,11 +3,9 @@
 
 MyBoundingObjectClass::MyBoundingObjectClass(const std::vector<vector3>& a_lVectorList)
 {
-    m_pBoundingBox = std::make_shared<MyBoundingBoxClass>(a_lVectorList);
-
-    m_pReorientedBoundingBox = std::make_shared<MyBoundingBoxClass>( a_lVectorList );
-
-    m_pBoundingSphere = std::make_shared<MyBoundingSphereClass>( a_lVectorList );
+	m_pBoundingBox = new MyBoundingBoxClass(a_lVectorList);
+    m_pReorientedBoundingBox = new MyBoundingBoxClass( a_lVectorList );
+    m_pBoundingSphere = new MyBoundingSphereClass( a_lVectorList );
 }
 
 MyBoundingObjectClass::MyBoundingObjectClass(MyBoundingObjectClass const& other)
@@ -15,15 +13,13 @@ MyBoundingObjectClass::MyBoundingObjectClass(MyBoundingObjectClass const& other)
     m_m4ToWorld = other.m_m4ToWorld;
 
     m_v3Center = other.m_v3Center;
-    m_v3Min = other.m_v3Min;
-    m_v3Max = other.m_v3Max;
 
     m_bVisibility = other.m_bVisibility;
     m_v3Color = other.m_v3Color;
 
-    m_pBoundingBox = other.m_pBoundingBox;
-    m_pReorientedBoundingBox = other.m_pReorientedBoundingBox;
-    m_pBoundingSphere = other.m_pBoundingSphere;
+    *m_pBoundingBox = *other.m_pBoundingBox;
+    *m_pReorientedBoundingBox = *other.m_pReorientedBoundingBox;
+    *m_pBoundingSphere = *other.m_pBoundingSphere;
 }
 
 MyBoundingObjectClass& MyBoundingObjectClass::operator=(MyBoundingObjectClass const& other)
@@ -31,8 +27,6 @@ MyBoundingObjectClass& MyBoundingObjectClass::operator=(MyBoundingObjectClass co
     m_m4ToWorld = other.m_m4ToWorld;
 
     m_v3Center = other.m_v3Center;
-    m_v3Min = other.m_v3Min;
-    m_v3Max = other.m_v3Max;
 
     m_bVisibility = other.m_bVisibility;
     m_v3Color = other.m_v3Color;
@@ -51,15 +45,13 @@ MyBoundingObjectClass::~MyBoundingObjectClass()
 bool MyBoundingObjectClass::IsColliding(MyBoundingObjectClass* const a_pOther) const
 {
     // Checks if the bounding sphere is colliding
-    if (!m_pBoundingSphere->IsColliding(a_pOther->m_pBoundingSphere.get()))
+    if (!m_pBoundingSphere->IsColliding(a_pOther->m_pBoundingSphere))
     {
         return false;
     }
 
     // Checks if oriented bounding box is colliding
-    return (m_pReorientedBoundingBox->IsColliding(a_pOther->m_pReorientedBoundingBox.get()));
-
-    // In the future, we would add Oriented Bounding Box collision
+    return m_pReorientedBoundingBox->IsColliding(a_pOther->m_pReorientedBoundingBox);
 }
 
 void MyBoundingObjectClass::Draw()
@@ -92,7 +84,7 @@ void MyBoundingObjectClass::SetModelMatrix(matrix4 a_m4ToWorld)
     m_pBoundingBox->SetModelMatrix(a_m4ToWorld);
     *m_pReorientedBoundingBox = m_pBoundingBox->GetReorientedBoundingBox();
 
-    m_pBoundingSphere->UpdateFromBoundingBox( m_pReorientedBoundingBox.get() );
+    m_pBoundingSphere->UpdateFromBoundingBox( m_pReorientedBoundingBox );
 
     matrix4 sphereWorld = glm::translate( vector3( a_m4ToWorld[ 3 ] ) );
     m_pBoundingSphere->SetModelMatrix( sphereWorld );
@@ -103,14 +95,24 @@ matrix4 MyBoundingObjectClass::GetModelMatrix() const
     return m_m4ToWorld;
 }
 
+void MyBoundingObjectClass::SetColor(vector3 a_v3Color)
+{
+	m_v3Color = a_v3Color;
+}
+
+vector3 MyBoundingObjectClass::GetColor()
+{
+	return m_v3Color;
+}
+
 vector3 MyBoundingObjectClass::GetCenterLocal() const
 {
-    return m_v3Center;
+	return m_pBoundingSphere->GetCenterLocal();
 }
 
 vector3 MyBoundingObjectClass::GetCenterGlobal() const
 {
-    return vector3(m_m4ToWorld * vector4(m_v3Center, 1.0f));
+	return m_pBoundingSphere->GetCenterGlobal();
 }
 
 vector3 MyBoundingObjectClass::GetMinimum() const
