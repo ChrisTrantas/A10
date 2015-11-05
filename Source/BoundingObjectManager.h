@@ -11,12 +11,13 @@ class BoundingObjectManager
 	bool m_bVisibility = false;	// Holds the visibility of the BO
 	//vector3 m_v3Color = REBLACK;	// Holds the color of the bounding object
 	
+	matrix4 m_m4ToWorld = IDENTITY_M4;
 
 public:
-	// Gets/constructs the singleton pointer
-	static BoundingObjectManager* GetInstance(); // problem here
-	
-	// Destroys the singleton
+	//// Gets/constructs the singleton pointer
+	static BoundingObjectManager* GetInstance(); 
+	//
+	//// Destroys the singleton
 	static void ReleaseInstance(void);
 
 	void AddBox(const std::vector<vector3>& vertices);
@@ -49,14 +50,14 @@ public:
 	void Draw();
 
 private:
-	//constructor
-	BoundingObjectManager();
-	//copy constuctor
-	BoundingObjectManager(BoundingObjectManager const& other);
-	// copy assignment operator
-	BoundingObjectManager& operator=(BoundingObjectManager const& other);
+	////constructor
+	//BoundingObjectManager();
+	////copy constuctor
+	//BoundingObjectManager(BoundingObjectManager const& other);
+	//// copy assignment operator
+	//BoundingObjectManager& operator=(BoundingObjectManager const& other);
 	// Destructor
-	~BoundingObjectManager(void);
+//	~BoundingObjectManager(void);
 
 	/* Releases the objects memory */
 	void Release(void);
