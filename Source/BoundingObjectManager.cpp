@@ -1,12 +1,15 @@
 #include "BoundingObjectManager.h"
-//  MyCameraSingleton
+
+//  BoundingObjectManager Singleton
 BoundingObjectManager* BoundingObjectManager::m_pInstance = nullptr;
 
+// Initilze variable to count size of list
 void BoundingObjectManager::Init(void)
 {
 	m_nBoxCount = m_lBox.size();
 }
 
+// Gets instance of BoundingObjectManager
 BoundingObjectManager* BoundingObjectManager::GetInstance()
 {
 	if (m_pInstance == nullptr)
@@ -15,6 +18,8 @@ BoundingObjectManager* BoundingObjectManager::GetInstance()
 	}
 	return m_pInstance;
 }
+
+// Releases Instance of BoundingObjectManager
 void BoundingObjectManager::ReleaseInstance()
 {
 	if (m_pInstance != nullptr)
@@ -24,94 +29,92 @@ void BoundingObjectManager::ReleaseInstance()
 	}
 }
 
-// Makex a new bounding object based on model then adds it to the list
-void BoundingObjectManager::AddBox(const std::vector<vector3>& vertices)
+// Make a new bounding object based on model then adds it to the list
+int BoundingObjectManager::AddBox(const std::vector<vector3>& vertices)
 {
-	// A
-	MyBoundingObjectClass* pBoundingBox = new MyBoundingObjectClass(vertices);
-	m_lBox.push_back(pBoundingBox);
-	// C
+	// A.) Add a box based on model
+	m_lBox.push_back(new MyBoundingObjectClass(vertices));
+
+	// C.) Get the number of BO in the manager
 	m_nBoxCount = m_lBox.size();
+
+	return m_lBox.size() - 1;
+}
+
+// C.) Get the number of BO in the manager
+int BoundingObjectManager::GetBOCount()
+{
+	return m_lBox.size();
 }
 
 // Sets the visibility
-void BoundingObjectManager::SetVisibility(bool a_bVisibility)
+void BoundingObjectManager::SetVisibility(int a_iIndex, bool a_bVisibility)
 {
-	// E
-	for (int i = 0; i < m_nBoxCount; i++)
-	{
-		m_lBox[i]->SetVisibility(a_bVisibility);
-	}
+	// E). Set the visibilty of a specific BO
+	m_lBox[a_iIndex]->SetVisibility(a_bVisibility);
+
 }
 
-// Gets the visibility of the bounding box
-bool BoundingObjectManager::GetVisibility() const
+// Gets the visibility of a specific BO
+bool BoundingObjectManager::GetVisibility(int a_iIndex) const
 {
-	return m_bVisibility;
+	return m_lBox[a_iIndex]->GetVisibility();
 }
 
-
-//vector3 BoundingObjectManager::GetCenterLocal() const
-//{
-//
-//}
-//
-//vector3 BoundingObjectManager::GetCenterGlobal() const
-//{
-//
-//}
-//
-//vector3 BoundingObjectManager::GetMinimum() const
-//{
-//
-//}
-//
-//vector3 BoundingObjectManager::GetMaximum() const
-//{
-//
-//}
-
-void BoundingObjectManager::SetModelMatrix(matrix4 a_m4ToWorld)
+// Sets the model matrix of a specific BO
+void BoundingObjectManager::SetModelMatrix(int a_iIndex, matrix4 a_m4ToWorld)
 {
-	for (int i = 0; i < m_nBoxCount; i++)
-	{
-		m_lBox[i]->SetModelMatrix(a_m4ToWorld);
-	}
+	m_lBox[a_iIndex]->SetModelMatrix(a_m4ToWorld);
 }
 
+// Gets the model matrix of a specific BO
 matrix4 BoundingObjectManager::GetModelMatrix() const
 {
-
 	return m_m4ToWorld;
-	
 }
 
-// Sets the color of the bounding box
-void BoundingObjectManager::SetColor(vector3 a_v3Color)
+// Sets the color of a specific BO
+void BoundingObjectManager::SetColor(int a_iIndex, vector3 a_v3Color)
 {
-	// D
-	for (int i = 0; i < m_nBoxCount; i++)
-	{
-		m_lBox[i]->SetColor(a_v3Color);
-	}
+	// D.) Set the color of a specific BO
+	m_lBox[a_iIndex]->SetColor(a_v3Color);
 }
 
 
 // Checks collisions of all BOs
-bool BoundingObjectManager::IsColliding(MyBoundingObjectClass* const a_pOther) const
+void BoundingObjectManager::CheckCollisions() const
 {
-	// G
+	// Set color to black if its not colliding
 	for (int i = 0; i < m_nBoxCount; i++)
 	{
-		// H
-		if (m_lBox[i]->IsColliding(a_pOther))
-		{
-			m_lBox[i]->SetColor(RERED);
-			//m_lBox[a_pOther]->SetColor(RERED);
-			return true;
-		}
-		return false;
+		m_lBox[i]->SetColor(REBLACK);
 	}
 
-	
+	// Set color to red if colliding
+	for (int i = 0; i < m_nBoxCount; i++)
+	{
+		for (int j = i + 1; j < m_nBoxCount; j++)
+		{
+			if (m_lBox[i]->IsColliding(m_lBox[j]))
+			{
+				m_lBox[i]->SetColor(RERED);
+				m_lBox[j]->SetColor(RERED);
+			}				
+		}
+	}
+}
+
+// Draw all BOs
+void BoundingObjectManager::Draw()
+{
+	for (int i = 0; i < m_nBoxCount; i++)
+	{
+		m_lBox[i]->Draw();
+	}
+}
+
+// Render specific BO
+void BoundingObjectManager::Draw(int a_iIndex)
+{
+	m_lBox[a_iIndex]->Draw();
 }

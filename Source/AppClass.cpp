@@ -2,14 +2,12 @@
 
 AppClass::AppClass( HINSTANCE hInstance, LPWSTR lpCmdLine, int nCmdShow, bool a_bUsingConsole )
     : super( hInstance, lpCmdLine, nCmdShow, a_bUsingConsole )
-    , _reorientedBB1( std::vector<vector3>() )
-    , _reorientedBB2( std::vector<vector3>() )
 {
 }
 
 void AppClass::InitWindow(String a_sWindowName)
 {
-    super::InitWindow("MyBoundingSphereClass example"); // Window Name
+    super::InitWindow("MyBoundingSphereClas"); // Window Name
 
     // Set the clear color based on Microsoft's CornflowerBlue (default in XNA)
     //if this line is in Init Application it will depend on the .cfg file, if it
@@ -21,22 +19,21 @@ void AppClass::InitVariables(void)
 {
     //Initialize positions
     m_v3O1 = vector3(-2.5f, 0.0f, 0.0f);
-    m_v3O2 = vector3(2.5f, 0.0f, 0.0f);
-
-	
+    m_v3O2 = vector3(2.5f, 0.0f, 0.0f);	
 
     //Load Models
     m_pMeshMngr->LoadModel("Minecraft\\MC_Steve.obj", "Steve");
     m_pMeshMngr->LoadModel("Minecraft\\MC_Creeper.obj", "Creeper");
 
-    m_pBO1 = new MyBoundingObjectClass(m_pMeshMngr->GetVertexList("Steve"));
-	m_pBO2 = new MyBoundingObjectClass(m_pMeshMngr->GetVertexList("Creeper"));
-
+	// Initilize Manager
 	m_pObjectManager = BoundingObjectManager::GetInstance(); // I did stuff
 
-	m_pObjectManager->AddBox(m_pMeshMngr->GetVertexList("Steve"));
-	m_pObjectManager->AddBox(m_pMeshMngr->GetVertexList("Creeper"));
+	// Sets the Index of Steve and Creeper
+	iSteveBOIndex = m_pObjectManager->AddBox(m_pMeshMngr->GetVertexList("Steve"));
+	iCreeperBOIndex = m_pObjectManager->AddBox(m_pMeshMngr->GetVertexList("Creeper"));
 
+	// Prints number of BO to the console
+	std::printf("Number of Bounding Objects: %d", m_pObjectManager->GetBOCount());
 }
 
 void AppClass::Update(void)
@@ -52,50 +49,28 @@ void AppClass::Update(void)
         CameraRotation();
 
     ArcBall();
-	m_pBO1->SetVisibility(true);
-	m_pBO2->SetVisibility(true);
 
     //Set the model matrices for both objects and Bounding Spheres
     m_pMeshMngr->SetModelMatrix( glm::translate( m_v3O1 ) * ToMatrix4( m_qArcBall ), "Steve" );
     m_pMeshMngr->SetModelMatrix( glm::translate( m_v3O2 ), "Creeper" );
 
-	m_pBO1->SetModelMatrix(glm::translate(m_v3O1) * ToMatrix4(m_qArcBall));
-	m_pObjectManager->SetModelMatrix(glm::translate(m_v3O2));
-
     // Set the bounding boxes' world matrices
-	m_pObjectManager->SetModelMatrix(m_pMeshMngr->GetModelMatrix("Steve"));
-	m_pObjectManager->SetModelMatrix(m_pMeshMngr->GetModelMatrix("Creeper"));
+	m_pObjectManager->SetModelMatrix(iSteveBOIndex, m_pMeshMngr->GetModelMatrix("Steve"));
+	m_pObjectManager->SetModelMatrix(iCreeperBOIndex, m_pMeshMngr->GetModelMatrix("Creeper"));
 
-    m_pBO1->SetModelMatrix(m_pObjectManager->GetModelMatrix());
-	m_pBO2->SetModelMatrix(m_pObjectManager->GetModelMatrix());
+	// Check collisons then draws
+	m_pObjectManager->CheckCollisions();
+	m_pObjectManager->Draw();
 
-    // Get the color for the un-oriented bounding boxes
-    vector3 v3Color = REWHITE;
-	m_pBO1->SetColor(REBLACK);
-	m_pBO2->SetColor(REBLACK);
-
-	if (m_pBO1->IsColliding(m_pBO2))
-		//m_pBO1->SetColor(RERED);
-
-	if (m_pBO2->IsColliding(m_pBO1))
-		//m_pBO2->SetColor(RERED);
-
-	m_pBO1->SetModelMatrix(m_pMeshMngr->GetModelMatrix("Steve"));
-	m_pBO2->SetModelMatrix(m_pMeshMngr->GetModelMatrix("Creeper"));
-	m_pObjectManager->SetModelMatrix(m_pObjectManager->GetModelMatrix());
-
-
-    m_pBO1->SetModelMatrix(m_pMeshMngr->GetModelMatrix("Steve"));
-	m_pBO2->SetModelMatrix(m_pMeshMngr->GetModelMatrix("Creeper"));
-    m_pBO1->Draw();
-	m_pBO2->Draw();
     //Adds all loaded instance to the render list
-    //m_pMeshMngr->AddInstanceToRenderList("ALL");
+    m_pMeshMngr->AddInstanceToRenderList("ALL");	
 
     //Indicate the FPS
     int nFPS = m_pSystem->GetFPS();
+
     //print info into the console
     printf("FPS: %d            \r", nFPS);//print the Frames per Second
+
     //Print info on the screen
     m_pMeshMngr->PrintLine(m_pSystem->GetAppName(), REYELLOW);
     m_pMeshMngr->Print("FPS:");
@@ -131,8 +106,5 @@ void AppClass::Display(void)
 void AppClass::Release(void)
 {
     super::Release(); //release the memory of the inherited fields
-    SafeDelete(m_pBB1);
-    SafeDelete(m_pBB2);
-	SafeDelete(m_pBO1);
-	SafeDelete(m_pBO2);
+	m_pObjectManager->ReleaseInstance();
 }
