@@ -29,12 +29,6 @@ void AppClass::InitVariables(void)
     m_pMeshMngr->LoadModel("Minecraft\\MC_Steve.obj", "Steve");
     m_pMeshMngr->LoadModel("Minecraft\\MC_Creeper.obj", "Creeper");
 
-    //m_pBB1 = new MyBoundingBoxClass( m_pMeshMngr->GetVertexList( "Steve" ) );
-    //m_pBB2 = new MyBoundingBoxClass( m_pMeshMngr->GetVertexList( "Creeper" ) );
-	//
-    //m_pBS1 = new MyBoundingSphereClass(m_pMeshMngr->GetVertexList("Steve"));
-    //m_pBS2 = new MyBoundingSphereClass(m_pMeshMngr->GetVertexList("Creeper"));
-
     m_pBO1 = new MyBoundingObjectClass(m_pMeshMngr->GetVertexList("Steve"));
 	m_pBO2 = new MyBoundingObjectClass(m_pMeshMngr->GetVertexList("Creeper"));
 
@@ -58,10 +52,13 @@ void AppClass::Update(void)
         CameraRotation();
 
     ArcBall();
+	m_pBO1->SetVisibility(true);
+	m_pBO2->SetVisibility(true);
 
     //Set the model matrices for both objects and Bounding Spheres
     m_pMeshMngr->SetModelMatrix( glm::translate( m_v3O1 ) * ToMatrix4( m_qArcBall ), "Steve" );
     m_pMeshMngr->SetModelMatrix( glm::translate( m_v3O2 ), "Creeper" );
+
 	m_pBO1->SetModelMatrix(glm::translate(m_v3O1) * ToMatrix4(m_qArcBall));
 	m_pObjectManager->SetModelMatrix(glm::translate(m_v3O2));
 
@@ -74,61 +71,19 @@ void AppClass::Update(void)
 
     // Get the color for the un-oriented bounding boxes
     vector3 v3Color = REWHITE;
+	m_pBO1->SetColor(REBLACK);
+	m_pBO2->SetColor(REBLACK);
+
 	if (m_pBO1->IsColliding(m_pBO2))
-        v3Color = RERED;
+		//m_pBO1->SetColor(RERED);
 
-	if (m_pObjectManager->IsColliding(m_pBO2))
-		m_pObjectManager->SetColor(REGREEN);
+	if (m_pBO2->IsColliding(m_pBO1))
+		//m_pBO2->SetColor(RERED);
 
-    // Add wire frames for the un-oriented bounding boxes
-    //m_pMeshMngr->AddCubeToQueue(glm::translate(m_pBB1->GetCenterGlobal()) * ToMatrix4(m_qArcBall) * glm::scale(m_pBB1->GetHalfWidth() * 2.0f), v3Color, WIRE);
-    //m_pMeshMngr->AddCubeToQueue(glm::translate(m_pBB2->GetCenterGlobal()) * glm::scale(m_pBB2->GetHalfWidth() * 2.0f), v3Color, WIRE);
-
-    // Get our re-oriented bounding boxes
-   // _reorientedBB1 = m_pBB1->GetReorientedBoundingBox();
-   // _reorientedBB2 = m_pBB2->GetReorientedBoundingBox();
-
-    // Get the color for the re-oriented bounding boxes
-   // v3Color = REBLACK;
-   // if ( _reorientedBB1.IsColliding( &_reorientedBB2 ) )
-   // {
-   //     // Pink
-   //     v3Color.r = 1.000000000f;
-   //     v3Color.g = 0.752941251f;
-   //     v3Color.b = 0.796078503f;
-   // }
-
-    // Add wire frames for the re-oriented bounding boxes
-   // m_pMeshMngr->AddCubeToQueue( glm::translate( _reorientedBB1.GetCenterGlobal() ) * glm::scale( _reorientedBB1.GetHalfWidth() * 2.0f ), v3Color, WIRE );
-    //m_pMeshMngr->AddCubeToQueue( glm::translate( _reorientedBB2.GetCenterGlobal() ) * glm::scale( _reorientedBB2.GetHalfWidth() * 2.0f ), v3Color, WIRE );
-
-    
-    
-    // Set the bounding sphere's position
-    // m_pBS1->SetModelMatrix(m_pMeshMngr->GetModelMatrix("Steve"));
-    //m_pBS2->SetModelMatrix(m_pMeshMngr->GetModelMatrix("Creeper"));
 	m_pBO1->SetModelMatrix(m_pMeshMngr->GetModelMatrix("Steve"));
 	m_pBO2->SetModelMatrix(m_pMeshMngr->GetModelMatrix("Creeper"));
 	m_pObjectManager->SetModelMatrix(m_pObjectManager->GetModelMatrix());
 
-    // Get the color for the bounding spheres
-   //v3Color = REBLACK;
-   //if (m_pBS1->IsColliding(m_pBS2))
-   //{
-   //    v3Color.r = 1.000000000f;
-   //    v3Color.g = 0;
-   //    v3Color.b = 0;
-   //}
-	if (m_pBO1->IsColliding(m_pBO2))
-	{
-	    v3Color.r = 1.000000000f;
-	    v3Color.g = 0;
-	    v3Color.b = 0;
-	}
-
-    // Add wire frames for the bounding spheres
-    //m_pMeshMngr->AddSphereToQueue(glm::translate(m_pBS1->GetCenterGlobal()) *   glm::scale(vector3(m_pBS1->GetRadius()* 2.0f)), v3Color, WIRE);
-   // m_pMeshMngr->AddSphereToQueue(glm::translate(m_pBS2->GetCenterGlobal()) * glm::scale(vector3(m_pBS2->GetRadius()* 2.0f)), v3Color, WIRE);
 
     m_pBO1->SetModelMatrix(m_pMeshMngr->GetModelMatrix("Steve"));
 	m_pBO2->SetModelMatrix(m_pMeshMngr->GetModelMatrix("Creeper"));

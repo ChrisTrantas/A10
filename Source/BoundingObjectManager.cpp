@@ -106,10 +106,12 @@ bool BoundingObjectManager::IsColliding(MyBoundingObjectClass* const a_pOther) c
 		// H
 		if (m_lBox[i]->IsColliding(a_pOther))
 		{
-			m_lBox[i]->SetColor(REGREEN);
+			m_lBox[i]->SetColor(RERED);
 			//m_lBox[a_pOther]->SetColor(RERED);
+			return true;
 		}
+		return false;
 	}
 
-	return true;
+	
 }
