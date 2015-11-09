@@ -6,6 +6,25 @@
 #include "MyBoundingBoxClass.h"
 #include "MyBoundingSphereClass.h"
 
+struct CoordinateSystem
+{
+    vector3 XAxis;
+    vector3 YAxis;
+    vector3 ZAxis;
+
+    inline vector3 operator[]( size_t index ) const
+    {
+        vector3 result;
+        switch ( index )
+        {
+            case 0: result = XAxis; break;
+            case 1: result = YAxis; break;
+            case 2: result = ZAxis; break;
+        }
+        return result;
+    }
+};
+
 class MyBoundingObjectClass
 {
     MyBoundingBoxClass* m_pBoundingBox;
@@ -37,6 +56,9 @@ public:
 
     vector3 GetMinimum() const;	// Gets the minimum vector 3 of the bounding object
     vector3 GetMaximum() const;	// Gets the maximum vector 3 of the bounding object
+
+    // Gets this bounding object's local coordinate system
+    CoordinateSystem GetLocalCoordinateSystem() const;
 
 #pragma region Accessors
     void SetModelMatrix(matrix4 a_m4ToWorld);	// Sets the to world matrix of the bounding object
