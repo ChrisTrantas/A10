@@ -58,6 +58,15 @@ void AppClass::ProcessKeyboard(void)
         vec->y += 0.1f;
 #pragma endregion
 
+	if (sf::Keyboard::isKeyPressed(sf::Keyboard::V))
+		m_pObjectManager->SetVisibility(iCreeperBOIndex, false);
+	else
+		m_pObjectManager->SetVisibility(iCreeperBOIndex, true);
+
+	if (sf::Keyboard::isKeyPressed(sf::Keyboard::C))
+		m_pObjectManager->SetColor(iCreeperBOIndex, REWHITE);
+
+
 #pragma region Other Actions
     ON_KEY_PRESS_RELEASE(Escape, NULL, PostMessage(m_pWindow->GetHandler(), WM_QUIT, NULL, NULL));
     ON_KEY_PRESS_RELEASE(F1, NULL, m_pCameraMngr->SetCameraMode(CAMPERSP));

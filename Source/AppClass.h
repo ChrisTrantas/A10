@@ -10,23 +10,19 @@ Date: 2015/09
 #include "MyBoundingBoxClass.h"
 #include "MyBoundingSphereClass.h"
 #include "MyBoundingObjectClass.h"
+#include "BoundingObjectManager.h"
 
 using namespace ReEng; //Using ReEng namespace to use all the classes in the dll
 
 class AppClass : public ReEngAppClass
 {
-    MyBoundingBoxClass* m_pBB1 = nullptr;
-    MyBoundingBoxClass* m_pBB2 = nullptr;
-    MyBoundingBoxClass _reorientedBB1;
-    MyBoundingBoxClass _reorientedBB2;
-
-	MyBoundingSphereClass* m_pBS1 = nullptr;
-	MyBoundingSphereClass* m_pBS2 = nullptr;
-
-	MyBoundingObjectClass* m_pBO1 = nullptr;
+	BoundingObjectManager* m_pObjectManager;
 
     vector3 m_v3O1 = vector3(-2.5f, 0.0f, 0.0f);
     vector3 m_v3O2 = vector3( 2.5f, 0.0f, 0.0f);
+
+	int iSteveBOIndex;
+	int iCreeperBOIndex;
 
 public:
     typedef ReEngAppClass super;

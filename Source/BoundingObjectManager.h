@@ -4,64 +4,74 @@
 
 class BoundingObjectManager
 {
+	// Instance for BO manager
 	static BoundingObjectManager* m_pInstance;
-	std::shared_ptr<MyBoundingObjectClass*> m_pBoundingObject;
-	std::shared_ptr<MyBoundingBoxClass> m_pReorientedBoundingBox;
-	std::shared_ptr<MyBoundingSphereClass> m_pBoundingSphere;
 
-	bool m_bVisibility;	// Holds the visibility of the BO
-	vector3 m_v3Color = REBLACK;	// Holds the color of the bounding object
+	// List of BOs
+	std::vector<MyBoundingObjectClass*> m_lBox; 
 
-	matrix4 m_m4ToWorld = IDENTITY_M4; // Matrix that takes us from local to world coordinates
-	vector3 m_v3Center = vector3(0.0f); // Stores the center point of the Bounding Object
-	vector3 m_v3Min = vector3(0.0f); // Stores the minimum vector of the bounding object Class
-	vector3 m_v3Max = vector3(0.0f); // Stores the maximum vector of the bounding object Class
+	// Count of BOs
+	int m_nBoxCount = 0;
+
+	// Holds the visibility of the BO
+	bool m_bVisibility = false;	
+	
+	// World Matrix
+	matrix4 m_m4ToWorld = IDENTITY_M4;
 
 public:
 	// Gets/constructs the singleton pointer
-	static BoundingObjectManager* GetInstance(); // problem here
-	
+	static BoundingObjectManager* GetInstance(); 
+
 	// Destroys the singleton
 	static void ReleaseInstance(void);
 
-	void SetVisibility(bool a_bVisibility);
+	// Adds box based on model
+	int AddBox(const std::vector<vector3>& vertices);
 
-	bool GetVisibility() const;
+	// Sets visiblity of a specific BO
+	void SetVisibility(int a_iIndex, bool a_bVisibility);
 
+	// Gets visiblity of a specific BO
+	bool GetVisibility(int a_iIndex) const;
 
+	// Gets Center of model in Local space
 	vector3 GetCenterLocal() const;
 
+	// Gets Center of model in Global space
 	vector3 GetCenterGlobal() const;
 
+	// Get BOCount
+	int GetBOCount();
 
+	// Get Minimum value
 	vector3 GetMinimum() const;
 
+	// Get Maximum value
 	vector3 GetMaximum() const;
 
+	// Checks collisons with all other BOs
+	void CheckCollisions() const;	
 
-	void SetModelMatrix(matrix4 a_m4ToWorld);
+	// Sets the model matrix of a specific index
+	void SetModelMatrix(int a_iIndex, matrix4 a_m4ToWorld);
+
+	// Gets the model matrix of a specific index
 	matrix4 GetModelMatrix() const;
 
 	// Sets the color of the Bounding Object
-	void SetColor(vector3 a_v3Color);
+	void SetColor(int a_iIndex, vector3 a_v3Color);
 
-	/// <summary>
-	/// Draws this bounding object.
-	/// </summary>
+	// Renders all bounding objects
 	void Draw();
 
-private:
-	//constructor
-	BoundingObjectManager();
-	//copy constuctor
-	BoundingObjectManager(BoundingObjectManager const& other);
-	// copy assignment operator
-	BoundingObjectManager& operator=(BoundingObjectManager const& other);
-	// Destructor
-	~BoundingObjectManager(void);
+	// Draws a specific bounding object
+	void Draw(int a_iIndex);
 
+private:
 	/* Releases the objects memory */
 	void Release(void);
+
 	/* Initializes the objects fields */
 	void Init(void);
 };

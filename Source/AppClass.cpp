@@ -2,14 +2,12 @@
 
 AppClass::AppClass( HINSTANCE hInstance, LPWSTR lpCmdLine, int nCmdShow, bool a_bUsingConsole )
     : super( hInstance, lpCmdLine, nCmdShow, a_bUsingConsole )
-    , _reorientedBB1( std::vector<vector3>() )
-    , _reorientedBB2( std::vector<vector3>() )
 {
 }
 
 void AppClass::InitWindow(String a_sWindowName)
 {
-    super::InitWindow("MyBoundingSphereClass example"); // Window Name
+    super::InitWindow("MyBoundingSphereClas"); // Window Name
 
     // Set the clear color based on Microsoft's CornflowerBlue (default in XNA)
     //if this line is in Init Application it will depend on the .cfg file, if it
@@ -21,19 +19,21 @@ void AppClass::InitVariables(void)
 {
     //Initialize positions
     m_v3O1 = vector3(-2.5f, 0.0f, 0.0f);
-    m_v3O2 = vector3(2.5f, 0.0f, 0.0f);
+    m_v3O2 = vector3(2.5f, 0.0f, 0.0f);	
 
     //Load Models
     m_pMeshMngr->LoadModel("Minecraft\\MC_Steve.obj", "Steve");
     m_pMeshMngr->LoadModel("Minecraft\\MC_Creeper.obj", "Creeper");
 
-    m_pBB1 = new MyBoundingBoxClass( m_pMeshMngr->GetVertexList( "Steve" ) );
-    m_pBB2 = new MyBoundingBoxClass( m_pMeshMngr->GetVertexList( "Creeper" ) );
+	// Initilize Manager
+	m_pObjectManager = BoundingObjectManager::GetInstance(); // I did stuff
 
-    m_pBS1 = new MyBoundingSphereClass(m_pMeshMngr->GetVertexList("Steve"));
-    m_pBS2 = new MyBoundingSphereClass(m_pMeshMngr->GetVertexList("Creeper"));
+	// Sets the Index of Steve and Creeper
+	iSteveBOIndex = m_pObjectManager->AddBox(m_pMeshMngr->GetVertexList("Steve"));
+	iCreeperBOIndex = m_pObjectManager->AddBox(m_pMeshMngr->GetVertexList("Creeper"));
 
-    m_pBO1 = new MyBoundingObjectClass(m_pMeshMngr->GetVertexList("Steve"));
+	// Prints number of BO to the console
+	std::printf("Number of Bounding Objects: %d", m_pObjectManager->GetBOCount());
 }
 
 void AppClass::Update(void)
@@ -55,65 +55,22 @@ void AppClass::Update(void)
     m_pMeshMngr->SetModelMatrix( glm::translate( m_v3O2 ), "Creeper" );
 
     // Set the bounding boxes' world matrices
-    m_pBB1->SetModelMatrix(m_pMeshMngr->GetModelMatrix("Steve"));
-    m_pBB2->SetModelMatrix(m_pMeshMngr->GetModelMatrix("Creeper"));
+	m_pObjectManager->SetModelMatrix(iSteveBOIndex, m_pMeshMngr->GetModelMatrix("Steve"));
+	m_pObjectManager->SetModelMatrix(iCreeperBOIndex, m_pMeshMngr->GetModelMatrix("Creeper"));
 
-    // Get the color for the un-oriented bounding boxes
-    vector3 v3Color = REWHITE;
-    if (m_pBB1->IsColliding(m_pBB2))
-        v3Color = RERED;
-
-    // Add wire frames for the un-oriented bounding boxes
-    //m_pMeshMngr->AddCubeToQueue(glm::translate(m_pBB1->GetCenterGlobal()) * ToMatrix4(m_qArcBall) * glm::scale(m_pBB1->GetHalfWidth() * 2.0f), v3Color, WIRE);
-    m_pMeshMngr->AddCubeToQueue(glm::translate(m_pBB2->GetCenterGlobal()) * glm::scale(m_pBB2->GetHalfWidth() * 2.0f), v3Color, WIRE);
-
-    // Get our re-oriented bounding boxes
-    _reorientedBB1 = m_pBB1->GetReorientedBoundingBox();
-    _reorientedBB2 = m_pBB2->GetReorientedBoundingBox();
-
-    // Get the color for the re-oriented bounding boxes
-    v3Color = REBLACK;
-    if ( _reorientedBB1.IsColliding( &_reorientedBB2 ) )
-    {
-        // Pink
-        v3Color.r = 1.000000000f;
-        v3Color.g = 0.752941251f;
-        v3Color.b = 0.796078503f;
-    }
-
-    // Add wire frames for the re-oriented bounding boxes
-   // m_pMeshMngr->AddCubeToQueue( glm::translate( _reorientedBB1.GetCenterGlobal() ) * glm::scale( _reorientedBB1.GetHalfWidth() * 2.0f ), v3Color, WIRE );
-    m_pMeshMngr->AddCubeToQueue( glm::translate( _reorientedBB2.GetCenterGlobal() ) * glm::scale( _reorientedBB2.GetHalfWidth() * 2.0f ), v3Color, WIRE );
-    
-    
-    
-    // Set the bounding sphere's position
-    m_pBS1->SetModelMatrix(m_pMeshMngr->GetModelMatrix("Steve"));
-    m_pBS2->SetModelMatrix(m_pMeshMngr->GetModelMatrix("Creeper"));
-
-    // Get the color for the bounding spheres
-    v3Color = REBLACK;
-    if (m_pBS1->IsColliding(m_pBS2))
-    {
-        v3Color.r = 1.000000000f;
-        v3Color.g = 0;
-        v3Color.b = 0;
-    }
-
-    // Add wire frames for the bounding spheres
-    //m_pMeshMngr->AddSphereToQueue(glm::translate(m_pBS1->GetCenterGlobal()) *   glm::scale(vector3(m_pBS1->GetRadius()* 2.0f)), v3Color, WIRE);
-    m_pMeshMngr->AddSphereToQueue(glm::translate(m_pBS2->GetCenterGlobal()) * glm::scale(vector3(m_pBS2->GetRadius()* 2.0f)), v3Color, WIRE);
-
-    m_pBO1->SetModelMatrix(m_pMeshMngr->GetModelMatrix("Steve"));
-    m_pBO1->Draw();
+	// Check collisons then draws
+	m_pObjectManager->CheckCollisions();
+	m_pObjectManager->Draw();
 
     //Adds all loaded instance to the render list
-    m_pMeshMngr->AddInstanceToRenderList("ALL");
+    m_pMeshMngr->AddInstanceToRenderList("ALL");	
 
     //Indicate the FPS
     int nFPS = m_pSystem->GetFPS();
+
     //print info into the console
     printf("FPS: %d            \r", nFPS);//print the Frames per Second
+
     //Print info on the screen
     m_pMeshMngr->PrintLine(m_pSystem->GetAppName(), REYELLOW);
     m_pMeshMngr->Print("FPS:");
@@ -149,6 +106,5 @@ void AppClass::Display(void)
 void AppClass::Release(void)
 {
     super::Release(); //release the memory of the inherited fields
-    SafeDelete(m_pBB1);
-    SafeDelete(m_pBB2);
+	m_pObjectManager->ReleaseInstance();
 }
