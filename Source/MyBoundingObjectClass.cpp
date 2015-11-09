@@ -48,6 +48,7 @@ MyBoundingObjectClass::~MyBoundingObjectClass()
 bool MyBoundingObjectClass::AreOBBsColliding( MyBoundingObjectClass* const other ) const
 {
     /**
+     *  // From Real Time Collision Detection
      *  struct OBB {
      *      Point c; // OBB center point
      *      Vector u[3]; // Local x-, y-, and z-axes
@@ -87,10 +88,18 @@ bool MyBoundingObjectClass::AreOBBsColliding( MyBoundingObjectClass* const other
 // Get the local coordinate system
 CoordinateSystem MyBoundingObjectClass::GetLocalCoordinateSystem() const
 {
+    // Get the rotation-only matrix
+    matrix4 rotation = m_m4ToWorld;
+    rotation[ 3 ] = vector4( 0, 0, 0, 1 );
+    rotation[ 0 ][ 0 ] = 1;
+    rotation[ 1 ][ 1 ] = 1;
+    rotation[ 2 ][ 2 ] = 1;
+
+    // Get the local coordinate axes
     CoordinateSystem local;
-    local.XAxis = TransformVector( m_m4ToWorld, vector3( 1, 0,  0 ) );
-    local.YAxis = TransformVector( m_m4ToWorld, vector3( 0, 1,  0 ) );
-    local.ZAxis = TransformVector( m_m4ToWorld, vector3( 0, 0, -1 ) ); // OpenGL is a RHS
+    local.XAxis = TransformVector( rotation, vector3( 1, 0,  0 ) );
+    local.YAxis = TransformVector( rotation, vector3( 0, 1,  0 ) );
+    local.ZAxis = TransformVector( rotation, vector3( 0, 0, -1 ) ); // OpenGL is a RHS
     return local;
 }
 
