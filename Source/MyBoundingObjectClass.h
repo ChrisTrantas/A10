@@ -17,6 +17,9 @@ class MyBoundingObjectClass
 
     matrix4 m_m4ToWorld = IDENTITY_M4;	// Matrix that takes us from local to world coordinates
 
+    // Checks to see if our OBB is colliding with another bounding object's OBB
+    bool AreOBBsColliding( MyBoundingObjectClass* const other ) const;
+
 public:
     // Creates Bounding Object from list of vertices
     MyBoundingObjectClass(const std::vector<vector3>& vertices);

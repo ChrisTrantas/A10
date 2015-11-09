@@ -38,16 +38,25 @@ MyBoundingObjectClass::~MyBoundingObjectClass()
 {
 }
 
-bool MyBoundingObjectClass::IsColliding(MyBoundingObjectClass* const a_pOther) const
+bool MyBoundingObjectClass::AreOBBsColliding( MyBoundingObjectClass* const other ) const
+{
+}
+
+bool MyBoundingObjectClass::IsColliding( MyBoundingObjectClass* const a_pOther ) const
 {
     // Checks if the bounding sphere is colliding
-    if (!m_pBoundingSphere->IsColliding(a_pOther->m_pBoundingSphere))
+    if ( !m_pBoundingSphere->IsColliding( a_pOther->m_pBoundingSphere ) )
     {
         return false;
     }
 
     // Checks if oriented bounding box is colliding
-    return m_pReorientedBoundingBox->IsColliding(a_pOther->m_pReorientedBoundingBox);
+    if ( !m_pReorientedBoundingBox->IsColliding( a_pOther->m_pReorientedBoundingBox ) )
+    {
+        return false;
+    }
+
+    return AreOBBsColliding( a_pOther );
 }
 
 void MyBoundingObjectClass::Draw()
