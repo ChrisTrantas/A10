@@ -83,6 +83,47 @@ bool MyBoundingObjectClass::AreOBBsColliding( MyBoundingObjectClass* const other
     translation.x = glm::dot( translation, thisAxes[ 0 ] );
     translation.y = glm::dot( translation, thisAxes[ 1 ] );
     translation.z = glm::dot( translation, thisAxes[ 2 ] );
+
+	float thisProjRadius; // Length of the projection of this OBB
+	float thatProjRadius; // Length of the projection of that OBB
+
+	// Test local axes of this OBB
+	for (int i = 0; i < 3; i++)	// Iterates through each dimension of this OBB
+	{
+		// Sets the projection length of this OBB to the half the length of the box in this OBBs ith dimension
+		thisProjRadius = thisObb->GetHalfWidth()[i];
+		
+		// Sets the projection length of that OBB to be its half projection onto this OBBs ith dimension
+		thatProjRadius =
+			thatObb->GetHalfWidth()[0] * absRotation[i][0]
+			+ thatObb->GetHalfWidth()[1] * absRotation[i][1]
+			+ thatObb->GetHalfWidth()[2] * absRotation[i][2];
+
+		// Sees if the distance between the the OBB exceed the the combine lengths of the projected Radii
+		if (abs(translation[i]) > thisProjRadius + thatProjRadius)
+			return false;
+	}
+
+	// Test local axes of that OBB
+	for (int i = 0; i < 3; i++)	// Iterates through each dimension of this OBB
+	{
+		// Sets the projection length of this OBB to the half the length of the box in that OBBs ith dimension
+		thisProjRadius =
+			thisObb->GetHalfWidth()[0] * absRotation[i][0]
+			+ thisObb->GetHalfWidth()[1] * absRotation[i][1]
+			+ thisObb->GetHalfWidth()[2] * absRotation[i][2];
+
+		/// Sets the projection length of that OBB to be its half projection onto that OBBs ith dimension
+		thatProjRadius = thatObb->GetHalfWidth()[i];
+
+		// Sees if the distance between the the OBB exceed the the combine lengths of the projected Radii
+		if (abs(translation[i]) > thisProjRadius + thatProjRadius)
+			return false;
+	}
+
+
+	// Returns true since there is no case where the 
+	return true;
 }
 
 // Get the local coordinate system
