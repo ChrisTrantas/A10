@@ -50,9 +50,9 @@ bool MyBoundingObjectClass::AreOBBsColliding( MyBoundingObjectClass* const other
     /**
      *  // From Real Time Collision Detection
      *  struct OBB {
-     *      Point c; // OBB center point
+     *      Point c;     // OBB center point
      *      Vector u[3]; // Local x-, y-, and z-axes
-     *      Vector e; // Positive halfwidth extents of OBB along each axis
+     *      Vector e;    // Positive halfwidth extents of OBB along each axis
      *  };
      */
 
@@ -84,63 +84,60 @@ bool MyBoundingObjectClass::AreOBBsColliding( MyBoundingObjectClass* const other
     translation.y = glm::dot( translation, thisAxes[ 1 ] );
     translation.z = glm::dot( translation, thisAxes[ 2 ] );
 
-	float thisProjRadius; // Length of the projection of this OBB
-	float thatProjRadius; // Length of the projection of that OBB
+    float thisProjRadius; // Length of the projection of this OBB
+    float thatProjRadius; // Length of the projection of that OBB
 
-	// Test local axes of this OBB
-	for (int i = 0; i < 3; i++)	// Iterates through each dimension of this OBB
-	{
-		// Sets the projection length of this OBB to the half the length of the box in this OBBs ith dimension
-		thisProjRadius = thisObb->GetHalfWidth()[i];
-		
-		// Sets the projection length of that OBB to be its half projection onto this OBBs ith dimension
-		thatProjRadius =
-			thatObb->GetHalfWidth()[0] * absRotation[i][0]
-			+ thatObb->GetHalfWidth()[1] * absRotation[i][1]
-			+ thatObb->GetHalfWidth()[2] * absRotation[i][2];
+    // Test local axes of this OBB
+    for (int i = 0; i < 3; i++)	// Iterates through each dimension of this OBB
+    {
+        // Sets the projection length of this OBB to the half the length of the box in this OBBs ith dimension
+        thisProjRadius = thisObb->GetHalfWidth()[i];
+        
+        // Sets the projection length of that OBB to be its half projection onto this OBBs ith dimension
+        thatProjRadius =
+            thatObb->GetHalfWidth()[0] * absRotation[i][0]
+            + thatObb->GetHalfWidth()[1] * absRotation[i][1]
+            + thatObb->GetHalfWidth()[2] * absRotation[i][2];
 
-		// Sees if the distance between the the OBB exceed the the combine lengths of the projected Radii
-		if (abs(translation[i]) > thisProjRadius + thatProjRadius)
-			return false;
-	}
+        // Sees if the distance between the the OBB exceed the the combine lengths of the projected Radii
+        if (abs(translation[i]) > thisProjRadius + thatProjRadius)
+            return false;
+    }
 
-	// Test local axes of that OBB
-	for (int i = 0; i < 3; i++)	// Iterates through each dimension of this OBB
-	{
-		// Sets the projection length of this OBB to the half the length of the box in that OBBs ith dimension
-		thisProjRadius =
-			thisObb->GetHalfWidth()[0] * absRotation[i][0]
-			+ thisObb->GetHalfWidth()[1] * absRotation[i][1]
-			+ thisObb->GetHalfWidth()[2] * absRotation[i][2];
+    // Test local axes of that OBB
+    for (int i = 0; i < 3; i++)	// Iterates through each dimension of this OBB
+    {
+        // Sets the projection length of this OBB to the half the length of the box in that OBBs ith dimension
+        thisProjRadius =
+            thisObb->GetHalfWidth()[0] * absRotation[i][0]
+            + thisObb->GetHalfWidth()[1] * absRotation[i][1]
+            + thisObb->GetHalfWidth()[2] * absRotation[i][2];
 
-		/// Sets the projection length of that OBB to be its half projection onto that OBBs ith dimension
-		thatProjRadius = thatObb->GetHalfWidth()[i];
+        // Sets the projection length of that OBB to be its half projection onto that OBBs ith dimension
+        thatProjRadius = thatObb->GetHalfWidth()[i];
 
-		// Sees if the distance between the the OBB exceed the the combine lengths of the projected Radii
-		if (abs(translation[i]) > thisProjRadius + thatProjRadius)
-			return false;
-	}
+        // Sees if the distance between the the OBB exceed the the combine lengths of the projected Radii
+        if (abs(translation[i]) > thisProjRadius + thatProjRadius)
+            return false;
+    }
 
 
-	// Returns true since there is no case where the 
-	return true;
+    // Returns true since there is no case where the 
+    return true;
 }
 
 // Get the local coordinate system
 CoordinateSystem MyBoundingObjectClass::GetLocalCoordinateSystem() const
 {
-    // Get the rotation-only matrix
+    // Remove the translation from the world matrix
     matrix4 rotation = m_m4ToWorld;
     rotation[ 3 ] = vector4( 0, 0, 0, 1 );
-    rotation[ 0 ][ 0 ] = 1;
-    rotation[ 1 ][ 1 ] = 1;
-    rotation[ 2 ][ 2 ] = 1;
 
-    // Get the local coordinate axes
+    // Get the local coordinate axes (we need to normalize in case the matrix scales)
     CoordinateSystem local;
-    local.XAxis = TransformVector( rotation, vector3( 1, 0,  0 ) );
-    local.YAxis = TransformVector( rotation, vector3( 0, 1,  0 ) );
-    local.ZAxis = TransformVector( rotation, vector3( 0, 0, -1 ) ); // OpenGL is a RHS
+    local.XAxis = glm::normalize( TransformVector( rotation, vector3( 1, 0,  0 ) ) );
+    local.YAxis = glm::normalize( TransformVector( rotation, vector3( 0, 1,  0 ) ) );
+    local.ZAxis = glm::normalize( TransformVector( rotation, vector3( 0, 0, -1 ) ) ); // OpenGL is a RHS
     return local;
 }
 
