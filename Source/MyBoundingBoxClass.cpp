@@ -137,9 +137,6 @@ MyBoundingBoxClass MyBoundingBoxClass::GetReorientedBoundingBox() const
         newMax = glm::max( newMax, *iter );
     }
 
-
-
-
     // Set the min and max
     other.m_v3Min = newMin;
     other.m_v3Max = newMax;
