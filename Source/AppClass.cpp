@@ -62,6 +62,8 @@ void AppClass::Update(void)
 	m_pObjectManager->CheckCollisions();
 	m_pObjectManager->Draw();
 
+	
+
     //Adds all loaded instance to the render list
     m_pMeshMngr->AddInstanceToRenderList("ALL");	
 

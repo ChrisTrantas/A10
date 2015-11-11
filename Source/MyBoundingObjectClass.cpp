@@ -146,25 +146,25 @@ bool MyBoundingObjectClass::AreOBBsColliding( MyBoundingObjectClass* const other
 	thatProjRadius = thatObb->GetHalfWidth()[0] * absRotation[1][2] + thatObb->GetHalfWidth()[2] * absRotation[1][0];
 	if (abs(translation[0] * rotation[2][1] - translation[2] * rotation[0][1]) > thisProjRadius + thatProjRadius) return 0;
 
-	//// Test axis L = A1 x B2
-	//ra = a.e[0] * AbsR[2][2] + a.e[2] * AbsR[0][2];
-	//rb = b.e[0] * AbsR[1][1] + b.e[1] * AbsR[1][0];
-	//if (Abs(t[0] * R[2][2] - t[2] * R[0][2]) > ra + rb) return 0;
-	//
-	//// Test axis L = A2 x B0
-	//ra = a.e[0] * AbsR[1][0] + a.e[1] * AbsR[0][0];
-	//rb = b.e[1] * AbsR[2][2] + b.e[2] * AbsR[2][1];
-	//if (Abs(t[1] * R[0][0] - t[0] * R[1][0]) > ra + rb) return 0;
-	//
-	//// Test axis L = A2 x B1
-	//ra = a.e[0] * AbsR[1][1] + a.e[1] * AbsR[0][1];
-	//rb = b.e[0] * AbsR[2][2] + b.e[2] * AbsR[2][0];
-	//if (Abs(t[1] * R[0][1] - t[0] * R[1][1]) > ra + rb) return 0;
-	//
-	//// Test axis L = A2 x B2
-	//ra = a.e[0] * AbsR[1][2] + a.e[1] * AbsR[0][2];
-	//rb = b.e[0] * AbsR[2][1] + b.e[1] * AbsR[2][0];
-	//if (Abs(t[1] * R[0][2] - t[0] * R[1][2]) > ra + rb) return 0;
+	// Test axis L = A1 x B2
+	thisProjRadius = thisObb->GetHalfWidth()[0] * absRotation[2][2] + thisObb->GetHalfWidth()[2] * absRotation[0][2];
+	thatProjRadius = thatObb->GetHalfWidth()[0] * absRotation[1][1] + thatObb->GetHalfWidth()[1] * absRotation[1][0];
+	if (abs(translation[0] * rotation[2][2] - translation[2] * rotation[0][2]) > thisProjRadius + thatProjRadius) return 0;
+	
+	// Test axis L = A2 x B0
+	thisProjRadius = thisObb->GetHalfWidth()[0] * absRotation[1][0] + thisObb->GetHalfWidth()[1] * absRotation[0][0];
+	thatProjRadius = thatObb->GetHalfWidth()[1] * absRotation[2][2] + thatObb->GetHalfWidth()[2] * absRotation[2][1];
+	if (abs(translation[1] * rotation[0][0] - translation[0] * rotation[1][0]) > thisProjRadius + thatProjRadius) return 0;
+	
+	// Test axis L = A2 x B1
+	thisProjRadius = thisObb->GetHalfWidth()[0] * absRotation[1][1] + thisObb->GetHalfWidth()[1] * absRotation[0][1];
+	thatProjRadius = thatObb->GetHalfWidth()[0] * absRotation[2][2] + thatObb->GetHalfWidth()[2] * absRotation[2][0];
+	if (abs(translation[1] * rotation[0][1] - translation[0] * rotation[1][1]) > thisProjRadius + thatProjRadius) return 0;
+	
+	// Test axis L = A2 x B2
+	thisProjRadius = thisObb->GetHalfWidth()[0] * absRotation[1][2] + thisObb->GetHalfWidth()[1] * absRotation[0][2];
+	thatProjRadius = thatObb->GetHalfWidth()[0] * absRotation[2][1] + thatObb->GetHalfWidth()[1] * absRotation[2][0];
+	if (abs(translation[1] * rotation[0][2] - translation[0] * rotation[1][2]) > thisProjRadius + thatProjRadius) return 0;
 
 
     // Returns true since there is no case where the 
